@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width" />
+<title>Print Studio </title>
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/responsee.css">
+<link rel="stylesheet" href="owl-carousel/owl.carousel.css">
+<link rel="stylesheet" href="owl-carousel/owl.theme.css">
+<!-- CUSTOM STYLE -->
+<link rel="stylesheet" href="css/template-style.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+<script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui.min.js"></script>
+<script type="text/javascript" src="js/modernizr.js"></script>
+<script type="text/javascript" src="js/responsee.js"></script>
+
+      <script type='text/javascript' src='scripts/gen_validatorv31.js'></script>
+      <script type='text/javascript' src='scripts/fg_captcha_validator.js'></script>
+
+</script>
+
+<script type="text/javascript">
+<!--
+var timeout         = 500;
+var closetimer		= 0;
+var ddmenuitem      = 0;
+
+// open hidden layer
+function mopen(id)
+{	
+	// cancel close timer
+	mcancelclosetime();
+
+	// close old layer
+	if(ddmenuitem) ddmenuitem.style.visibility = 'hidden';
+
+	// get new layer and show it
+	ddmenuitem = document.getElementById(id);
+	ddmenuitem.style.visibility = 'visible';
+
+}
+// close showed layer
+function mclose()
+{
+	if(ddmenuitem) ddmenuitem.style.visibility = 'hidden';
+}
+
+// go close timer
+function mclosetime()
+{
+	closetimer = window.setTimeout(mclose, timeout);
+}
+
+// cancel close timer
+function mcancelclosetime()
+{
+	if(closetimer)
+	{
+		window.clearTimeout(closetimer);
+		closetimer = null;
+	}
+}
+
+// close layer when click-out
+document.onclick = mclose; 
+// -->
+</script>
+<script language="JavaScript" type="text/javascript">
+// JavaScript Document
+
+function formload()
+{
+	document.Enquiry.name.focus();
+}
+function checkIfemailValid(emailStr)
+{	
+	var emailPat=/^(.+)@(.+)$/
+	var specialChars="\\(\\)<>@,;:\\\\\\\"\\.\\[\\]"
+	var validChars="\[^\\s" + specialChars + "\]"
+	var quotedUser="(\"[^\"]*\")"
+	var ipDomainPat=/^\[(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})\]$/
+	var atom=validChars + '+'
+	var word="(" + atom + "|" + quotedUser + ")"
+	var userPat=new RegExp("^" + word + "(\\." + word + ")*$")
+	var domainPat=new RegExp("^" + atom + "(\\." + atom +")*$")
+	var matchArray=emailStr.match(emailPat)
+	
+	function check (f)
+	{
+	var checked = false, e, i = 0;
+	while (e = f.elements[i++]) {if (e.type == 'checkbox' && e.checked) checked = true};
+	if (!checked) alert ();
+	return checked;
+	}
+	
+//	checking for name
+	if (document.Enquiry.name.value == "")
+	{
+		alert("Please enter your name");
+		document.Enquiry.name.focus();
+		return false;
+	}
+	if (!isNaN(document.Enquiry.name.value))
+	{
+		alert("Please enter your name in alphabets");
+		document.Enquiry.name.value = "";
+		document.Enquiry.name.focus();
+		return false;
+	}
+
+	
+//	checking for phone
+	if (document.Enquiry.phone.value == "")
+	{
+		alert("Please enter your phone number");
+		document.Enquiry.phone.focus();
+		return false;
+	}
+	if (isNaN(document.Enquiry.phone.value))
+	{
+		alert("Please enter a valid phone number");
+		document.Enquiry.phone.value = "";
+		document.Enquiry.phone.focus();
+		return false;
+	}
+
+//	checking for email
+	if(document.Enquiry.email.value == "")
+	{
+		alert("Please enter your email address");
+		document.Enquiry.email.focus();
+		return false;
+	}
+	if (matchArray==null) 
+	{
+		alert("email address seems incorrect");
+		document.Enquiry.email.focus();
+		return false;
+	}
+	var user=matchArray[1]
+	var domain=matchArray[2]
+	
+	if (user.match(userPat)==null) 
+	{
+		alert("The username doesn't seem to be valid.");
+		document.Enquiry.email.focus();
+		return false;
+	}
+	
+	var IPArray=domain.match(ipDomainPat)
+	if (IPArray!=null) 
+	{
+    	for (var i=1;i<=4;i++) 
+		{
+			if (IPArray[i]>255) 
+			{
+				alert("Destination IP address is invalid!");
+				document.Enquiry.email.focus();
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	var domainArray=domain.match(domainPat)
+	if (domainArray==null) 
+	{
+		alert("The domain name doesn't seem to be valid. Please enter again.");
+		document.Enquiry.email.focus();
+		return false;
+	}
+	
+	var atomPat=new RegExp(atom,"g")
+	var domArr=domain.match(atomPat)
+	var len=domArr.length
+	if (domArr[domArr.length-1].length<2 || domArr[domArr.length-1].length>3) 
+	{
+		alert("The address must end in a three-letter domain, or two letter country.");
+		document.Enquiry.email.focus();
+		return false;
+	}
+	if (len<2) 
+	{
+		var errStr="This address is missing a hostname!  Please enter again."
+		alert(errStr);
+		document.Enquiry.email.focus();
+		return false;
+	}
+
+//	checking for enquiry
+	if (document.Enquiry.suggestions.value == "")
+	{
+		alert("Please write the product you are interested in and\n a brief message regarding the nature of enquiry.");
+		document.Enquiry.suggestions.focus();
+		return false;
+	}
+
+	return true;
+}
+</script>
+</head>
+<body class="size-1140">
+<!-- TOP NAV WITH LOGO -->
+<header>
+  <div id="topbar">
+    <div class="line">
+      <div class="s-12 m-6 l-6">
+        
+      </div>
+      <div class="s-12 m-12 l-12">
+        <div class="social right"><p><a href="mailto:santhosh.r@printstudio.in" style="color:white;">santhosh.r@printstudio.in</a></p></div>
+      </div>
+    </div>
+  </div>
+  <nav>
+    <div class="line">
+      <div class="s-12 l-5"> 
+        <div class="logo"> <a href="index.php"><img src="img/logo.png" width="173" height="67" style="max-width:173px; height:auto; background: #fff;  border-radius: 7px;"  ></a> </div>
+      </div>
+
+      <div class="top-nav s-12 l-7">
+        <p class="nav-text"></p>
+        <ul class="right top-ul chevron">
+          <li class="active-item"><a href="index.php">Home</a></li>
+          <li><a href="about-us.php">About Us</a></li>
+           <!-- start here-->
+          <li> <a href="services.php">Services</a>
+          <li><a href="careers.php">Careers</a></li>        
+          <li><a href="contact_us.php">CONTACT</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+<section>
+<!-- CAROUSEL -->
+<div id="carousel">
+  <div id="owl-demo" class="owl-carousel owl-theme">
+    <div class="item"> <img src="img/second.jpg" alt="">
+      <div class="line">
+        <div class="text hide-s">
+          <div class="line">
+            <div class="prev-arrow hide-s hide-m"> <i class="icon-chevron_left"></i> </div>
+            <div class="next-arrow hide-s hide-m"> <i class="icon-chevron_right"></i> </div>
+          </div>
+          <h2>Managed Print & Pay Service / Printer and Photocopier Rental Services.</h2>
+          <p>Business printing outsourcing one of the latest trend in the industry to save the cost of maintenance and investment in printers. Printstudio take cares of the outsourcing of print & Pay service with many value-added services being one of them.</p>
+        </div>
+      </div>
+    </div>
+    <div class="item"> <img src="img/third.jpg" alt="">
+      <div class="line">
+        <div class="text hide-s">
+          <div class="line">
+            <div class="prev-arrow hide-s hide-m"> <i class="icon-chevron_left"></i> </div>
+            <div class="next-arrow hide-s hide-m"> <i class="icon-chevron_right"></i> </div>
+          </div>
+          <h2>Annual Maintenance Contract</h2>
+          <p>AMC from Printstudio offers a broad spectrum of services to ensure that systems are in excellent condition and in an exceptional routine throughout the year. Because we understand that these systems are the critical part of the organizations business, so AMC is most important to them.</p>
+        </div>
+      </div>
+    </div>
+    <div class="item"> <img src="img/first.jpg" alt="">
+      <div class="line">
+        <div class="text hide-s">
+          <div class="line">
+            <div class="prev-arrow hide-s hide-m"> <i class="icon-chevron_left"></i> </div>
+            <div class="next-arrow hide-s hide-m"> <i class="icon-chevron_right"></i> </div>
+          </div>
+            <h2>Print Studio bringing you the world's latest cartridge refilling and printing solutions to India.</h2>
+          <p>We provide excellent and affordable solutions for day-to-day printing operati. We are specialized in providing a one-stop printing and cartridge refilling solutions for every printing need.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- FIRST BLOCK -->
+<div id="first-block">
+  <div class="line">
+    <h1> </h1>
+    <p>Print Studio Helps You Determine The Appropriate Technology For Your business.</p>
+    <div class="s-12 m-4 l-2 center"><a class="white-btn" href="#contact">CONTACT</a></div>
+  </div>
+</div>
+<!-- FEATURES -->
+<div id="features">
+  <div class="line">
+    <div class="margin">
+      <div class="s-12 m-6 l-3 margin-bottom"> <img src="img/bigdata-icon.png" width="25" height="23" style="max-width:140px; max-height:auto; text-align:center; display:inline;"/>
+        <h2>Annual Maintenance Contract</h2>
+        
+        <p>AMC from Printstudio offers a broad </br>
+spectrum of services  to ensure that systems are in excellent condition and in</br>
+an exceptional routine throughout the year.</p>
+      </div>
+      <div class="s-12 m-6 l-3 margin-bottom">  <img src="img/cloud-compt-icon.png" width="25" height="23" style="max-width:140px; max-height:auto; text-align:center; display:inline;"/>
+        <h2>Managed IT Services</h2>
+        <p>&nbsp;</p>
+        <p>Print studio's managed IT services supports the complete area of non-core business which comprise of services like AMC, FMS, Technology staffing solutions, Network operation center and Project management services.</br>
+        </p>
+      </div>
+      <div class="s-12 m-6 l-3 margin-bottom"><img src="img/mobile-development-icon.png" width="25" height="23" style="max-width:140px; max-height:auto; text-align:center; display:inline;"/>
+        <h2>Sales & Installation</h2>
+        <p>&nbsp;</p>      
+        <p>Sales & Installation of new printers, Cartridges and CISS for Inkjet Printers User Experience. CISS stands for 'Continuous Ink Supply System'. A CISS is used instead of standard inkjet cartridges.</br>
+          
+        </div>
+      <div class="s-12 m-6 l-3 margin-bottom"><img src="img/INTERNET-OF-THINGS.png" width="25" height="23" style="max-width:140px; max-height:auto; text-align:center; display:inline;"/> 
+        <h2>Qualitative Technical Support</h2>
+        <p>We always give prime importance to the quality of services we render. To serve clients in a better manner, we also offer technical support to assist our valued clients.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ABOUT US -->
+<div id="about-us">
+  <div class="s-12 m-12 l-6 media-container"> <img src="img/about.jpg" alt=""> </div>
+  <article class="s-12 m-12 l-6">
+    <h2>Welcome to <br>
+		Print Studio</h2>
+    <p>We are group with a history spanning more than a decade, providing different hospitality services in India, with an annual turnover more than 43 million rupees and presence in all over south India.</p></br>
+    <p>In 2007 we have forayed into the Computer Service, Printers Service, UPS Service, cartridge refilling and printing solutions to major corporate houses and individuals and 2008 we have made our new brand name PRINT STUDIO (INDIA) PRIVATE LIMITED (PRINT STUDIO) providing complete cost effective solutions in cartridge refilling and printing solutions industry. With the backing of a knowledge bank of providing varied expertise in the service sector for a range of industries & institutions, PRINT STUDIO is able to offer you a range of services to help you to earn a good business prospects by asking others reduce their daily printing expenditure.</p>
+    <div class="about-us-icons"> <a href="about-us.php"> <i class="icon-paperplane_ico"></i> </a>  </div>
+  </article>
+</div>
+
+<!-- OUR WORK -->
+<div id="our-work">
+<div class="line"> 
+<h2 class="section-title">OUR SERVICES</h2>
+<div class="tabs">
+<div class="tab-item tab-active"> <a class="tab-label active-btn">Managed IT Services</a>
+  <div class="tab-content">
+    <div class="margin">
+      <div class="s-12 m-6 l-3"><a class="our-work-container lightbox margin-bottom">
+        <div class="our-work-text">
+          <h4>Annual Maintenance Contract</h4>
+          <p>AMC from Printstudio offers a broad spectrum of services to ensure that systems are in excellent condition and in an exceptional routine throughout the year. Because we understand that these systems are the critical part of the organizations business, so AMC is most important to them.</p>
+          </div>
+        <img src="img/por1.jpg" alt=""></a></div>
+      <div class="s-12 m-6 l-3"><a class="our-work-container lightbox margin-bottom">
+        <div class="our-work-text">
+          <h4>Facility Management Services</h4>
+          <p>Facility Management Services from Printstudio guarantees constant admission and enactment of your IT frame as per the agreed Service Level Agreements which is offered through numerous support windows.Printstudio FMS team ensures the vital manpower with remote management support to  </p>
+        </div>
+        <img src="img/implementation.png" alt=""></a></div>
+      <div class="s-12 m-6 l-3"><a class="our-work-container lightbox margin-bottom">
+        <div class="our-work-text">
+          <h4>Project management</h4>
+          <p>Large Projects roll out Pan‐India<br>
+          Site Surveys&IT Audits<br>
+          Process Documentation& IT Consulting<br>
+          Infra Support Solutions<br>
+          Asset Deployment<br>
+          Tools and Services Automation<br>
+          Site Surveys&IT Audits<br>
+          Process Documentation& IT Consulting<br>
+          
+        </div>
+        <img src="img/first-quality.jpg" alt=""></a></div>
+      <div class="s-12 m-6 l-3"><a class="our-work-container lightbox margin-bottom">
+        <div class="our-work-text">
+          <h4>Network operation</h4>
+          <p>NOC of Printstudio is a 24/7 sheltered nursing facility<br>
+NOC of Printstudio is a 24/7 sheltered nursing facility, constantly inspecting your systems for budding concerns, with instant warnings and corrective involvements to elude interruption.Business environments are becoming more complex day by day, in this condition </p>
+        </div>
+        <img src="img/por3.jpg" alt=""></a></div>
+    </div>
+  </div>
+</div>
+
+<div class="tab-item"> <a class="tab-label">Managed Print Services</a>
+  <div class="tab-content">
+    <div class="margin">
+      <div class="s-12 m-6 l-3"><a class="our-work-container lightbox margin-bottom">
+        <div class="our-work-text">
+          <h4>Business printing</h4>
+          <p>Managed Print & Pay Service / Printer and Photocopier Rental Services<br>
+Business printing outsourcing one of the latest trend in the industry to save the cost of maintenance and investment in printers. Printstudio take cares of the outsourcing of print & Pay service with many value-added services being one of them. Offered services & benefits, Organized safety</p>
+        </div>
+        <img src="img/por44.jpg" alt=""></a></div>
+      <div class="s-12 m-6 l-3"><a class="our-work-container lightbox margin-bottom">
+        <div class="our-work-text">
+          <h4>Managed Print & Pay Service</h4>
+          <p>Managed Print & Pay Service / Printer and Photocopier Rental Services<br>
+Business printing outsourcing one of the latest trend in the industry to save the cost of maintenance and investment in printers. Printstudio take cares of the outsourcing of print & Pay service with many value-added services being one of them. Offered services & benefits, Organized safety</p>
+        </div>
+        <img src="img/second2.jpg" alt=""></a></div>
+      <div class="s-12 m-6 l-3"><a class="our-work-container lightbox margin-bottom">
+        <div class="our-work-text">
+          <h4>Printer and Photocopier Rental Services</h4>
+          <p>Managed Print & Pay Service / Printer and Photocopier Rental Services<br>
+Business printing outsourcing one of the latest trend in the industry to save the cost of maintenance and investment in printers. Printstudio take cares of the outsourcing of print & Pay service with many value-added services being one of them.</p>
+        </div>
+        <img src="img/second3.jpg" alt=""></a></div>
+      <div class="s-12 m-6 l-3"><a class="our-work-container lightbox margin-bottom">
+        <div class="our-work-text">
+          <h4>Offered services & benefits</h4>
+          <p>Managed Print & Pay Service / Printer and Photocopier Rental Services<br>
+Business printing outsourcing one of the latest trend in the industry to save the cost of maintenance and investment in printers. Printstudio take cares of the outsourcing of print & Pay service with many value-added services being one of them. Offered services & benefits, Organized safety</p>
+        </div>
+        <img src="img/por2.jpg" alt=""></a></div>
+    </div>
+  </div>
+</div>
+
+
+<div class="tab-item"> <a class="tab-label">Toner Cartridges</a>
+  <div class="tab-content">
+    <div class="margin">
+      <div class="s-12 m-6 l-3"><a class="our-work-container lightbox margin-bottom">
+        <div class="our-work-text">
+          <h4>Printer Cartridge</h4>
+          <p>Printstudio is one of the trustable supplier for printer cartridge and refiles, we have all brands of equipment parts which is required for a printer. Cartridge refilling means inserting new ink, laser powder or new ribbon (depending on the printer make) of the cartridge by keeping outer body as same. Printstudio is an expert in </p>
+        </div>
+        <img src="img/third1.jpg" alt=""></a></div>
+      <div class="s-12 m-6 l-3"><a class="our-work-container lightbox margin-bottom">
+        <div class="our-work-text">
+          <h4>Cartridge Refilling</h4>
+          <p>Printstudio is an expert in remanufacturing of toner cartridges for helping to improve the quality and yield of a cartridge from the remanufactured cartridge to the fresh OEM cartridge. We also do the partial refurbishing of toner cartridges in the time of replacing only the defective toner parts for cost effective printing and offering more value of money to the customers. </p>
+        </div>
+        <img src="img/third2.jpg" alt=""></a></div>
+      <div class="s-12 m-6 l-3"><a class="our-work-container lightbox margin-bottom">
+        <div class="our-work-text">
+          <h4>Cost cutting without compromising on quality</h4>
+          <p>Cost cutting without compromising on quality:-Refill & Re-Use your printer cartridges - at Printstudio stores our technician refills your printer cartridges and offers you up to 75% savings as compared to buying a new one.<br>
+          Saving cost and the Environmental Values:- </p>
+        </div>
+        <img src="img/third3.jpg" alt=""></a></div>
+      <div class="s-12 m-6 l-3"><a class="our-work-container lightbox margin-bottom">
+        <div class="our-work-text">
+          <h4>Compatible Toner Cartridges</h4>
+          <p>We supply our own brand of re-manufactured compatible toner cartridges which are guaranteed for its superior quality and productivity. The quality is as good as a new OEM cartridge and customer saves up to 40% of their cost while using a Printstudio cartridge compared to a new one.</p>
+        </div>
+        <img src="img/third4.jpg" alt=""></a></div>
+    </div>
+  </div>
+</div>
+  </div>
+</div>
+  </div>
+</div>
+<!-- SERVICES -->
+<div id="services">
+  <div class="line">
+    <h2 class="section-title">WHAT WE DO</h2>
+    <div class="margin">
+      <div class="s-12 m-6 l-4 margin-bottom"> <img src="img/it-consutling-img.png" width="144" height="144" style="max-width:110px; max-height:auto; text-align:center; float:left; padding-right:15px;"  />
+        <div class="service-text">
+          <h3><a href="services.php">IT Services</a></h3>
+          <p>Managed IT Services</br>
+            Facility Management Services</br>
+            Project management </br>
+            Managed Services </p>
+        </div>
+      </div>
+      <div class="s-12 m-6 l-4 margin-bottom"> <img src="img/technology-solution-img.png" width="144" height="144" style="max-width:110px; max-height:auto; text-align:center; float:left; padding-right:15px;"  />
+
+        <div class="service-text">
+          <h3><a href="services.php">Networking</a></h3>
+          <p>Server & Networks<br>
+            Vendor Management<br>
+            Service desk management<br>
+            Organized Repairs Undertakings and Backup</p>
+        </div>
+      </div>
+      <div class="s-12 m-6 l-4 margin-bottom"> <img src="img/it-staffing-img.png" width="144" height="144" style="max-width:110px; max-height:auto; text-align:center; float:left; padding-right:15px;"  />
+
+        <div class="service-text">
+          <h3><a href="services.php">Print Services</a></h3>
+          <p>Print & Pay Service<br>
+          Printer and Photocopier Rental Services<br>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- CONTACT -->
+<!-- CONTACT -->
+<div id="contact">
+  <div class="line">
+    <h2 class="section-title">CONTACT</h2>
+    <div class="margin">
+      <div class="s-12 m-12 l-3 hide-m hide-s margin-bottom right-align"> <img src="img/contact1.jpg" alt=""> </div>
+      <div class="s-12 m-12 l-4 margin-bottom right-align">
+        <h3>Print Studio India Pvt. Ltd.</h3>
+        <address>
+        <div id="contentleft">
+<p>#-M30,Sector 11<br>
+Jeevan Bheema Nagar Main Road<br>
+Bangalore - 560-075<br>
+
+<strong>Tel: </strong>+91-9591989510 / +91-9591989511<br>
+<br>
+<strong>E-mail:</strong><br>
+<a href="mailto:sales@printstudio.in">sales@printstudio.in</a><br>
+<a href="mailto:santhosh.r@printstudio.in">santhosh.r@printstudio.in</a></p>
+       </address>
+        <br />
+        
+      </div>
+      <div class="s-12 m-12 l-5">
+        <h3>CONTACT</h3>
+
+
+<div>
+
+<form action="mail.php" method="post" name="Enquiry" id="Enquiry" onSubmit="return checkIfemailValid(document.Enquiry.email.value)">
+  <div class="variants"><span class="orange"></span> </div>
+<div class="fields">
+  <label>
+  <input name="name" type="text" placeholder="Type Name *" id="name"  style="width:87%" />
+  </label>
+</div>
+<br clear="all" />
+
+<div class="variants"> <span class="orange"></span> </div>
+<div class="fields">
+  <label>
+  <input  name="phone" type="text" placeholder="Type Phone Number *"  id="phone"  style="width:87%"/>
+  </label>
+</div>
+<br clear="all" />
+
+<div class="variants"><span class="orange"></span> </div>
+<div class="fields">
+  <label>
+  <input name="email" type="text" placeholder="Type E-mail ID *" id="email" style="width:87%"  />
+  </label>
+</div>
+<br clear="all" />
+<div class="variants" >  <span class="orange"></span> </div>
+<div class="fields">
+  <label>
+  <textarea placeholder="Type Enquiry / suggestions *"  name="suggestions" cols="23" rows="4" id="suggestions" style="width:87%"></textarea>
+  </label>
+</div>
+<br clear="all" />
+
+<div class="fields">
+  <label>
+  <input type="submit" name="Submit" value="Submit" />
+  </label>
+  <label>
+  <input name="reset" type="reset" id="reset" value="Reset" />
+  </label>
+</div>
+<br clear="all" />
+
+</form>
+
+</div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAP -->
+<div id="contact_footer">
+  <div class="line_footer">
+    
+	  
+	  
+<div>
+<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d18494.505411883427!2d77.64837782574199!3d12.972438427893588!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae13ff8649680f%3A0x8232731965b8a742!2sPrint+Studio!5e0!3m2!1sen!2sin!4v1503745882540" width="100%" height="300" frameborder="0" style="border:0" allowfullscreen></iframe>
+</div>
+    </div>
+  </div>
+</div>
+
+</section>
+<!-- FOOTER -->
+<footer>
+  <div class="line">
+  <a href="#" id="toTop" class="toTop fa fa-angle-up" style="display: block; right:30px; position:absolute; color:#fff; text-align:right;"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" width="30px" height="30px" viewBox="0 0 300 300" enable-background="new 0 0 300 300" xml:space="preserve">
+<symbol id="BackToTopNormal_1_" viewBox="-144.067 -146.154 288.135 292.31">
+	<path fill="none" stroke="#A9A9A9" stroke-width="20" d="M0.003-136.154c73.922,0,134.064,61.075,134.064,136.154   c0,75.08-60.143,136.155-134.064,136.155c-73.928,0-134.07-61.075-134.07-136.155C-134.067-75.079-73.925-136.154,0.003-136.154   L0.003-136.154z M-77.727-29.896L0.003,47.834l77.729-77.729"/>
+</symbol>
+<g id="BackToTopNormal">
+	
+		<use xlink:href="#BackToTopNormal_1_" width="288.37" height="292.543" x="-144.067" y="-146.154" transform="matrix(1 0 0 -1 150.0674 150.8594)" overflow="visible"/>
+</g>
+
+</svg></a>
+    <div class="s-12 l-6">
+      <p>Copyright 2017, Print Studio India Pvt. Ltd.</p> 
+    </div>
+     <a style="float: right;" href="http://echopx.com/" target="_blank">EchoPx Technologies</a> 
+    <span style="float: right;"><p>Website design:&nbsp;</p></span>
+	</div>
+</footer>
+
+      <script type="text/javascript" src="owl-carousel/owl.carousel.js"></script>
+      <script type="text/javascript">
+         jQuery(document).ready(function($) {
+            var theme_slider = $("#owl-demo");
+            $("#owl-demo").owlCarousel({
+                navigation: false,
+                slideSpeed: 300,
+                paginationSpeed: 400,
+                autoPlay: 6000,
+                addClassActive: true,
+             // transitionStyle: "fade",
+                singleItem: true
+            });
+            $("#owl-demo2").owlCarousel({
+                slideSpeed: 300,
+                autoPlay: true,
+                navigation: true,
+                navigationText: ["&#xf007","&#xf006"],
+                pagination: false,
+                singleItem: true
+            });
+        
+            // Custom Navigation Events
+            $(".next-arrow").click(function() {
+                theme_slider.trigger('owl.next');
+            })
+            $(".prev-arrow").click(function() {
+                theme_slider.trigger('owl.prev');
+            })     
+        }); 
+      </script>
+ 
+ 
+     
+     
+ </body>
+</html>
